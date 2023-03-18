@@ -13,4 +13,9 @@ export type Stock = {
   id: number;
   ticket: string;
   name: string;
+  tickets: Ticket[]
+}
+
+export type Ticket = {
+  ticket: string;
 }

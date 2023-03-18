@@ -4,17 +4,26 @@ import Layout from '../../components/Layout'
 import List from '../../components/List'
 
 import { Stock } from '../../interfaces'
+import TicketForm from '../../components/TicketForm'
 import { sampleStockData } from '../../utils/sample-data'
+import { useState } from 'react'
 type Props = {
   items: Stock[]
 }
 
 const WithStaticProps = ({ items }: Props) => {
-  console.log('items', items)
+  const [show, setShow] = useState(false);
+  const [stock, setStock] = useState(0)
+  const handleOpen = async (stock: number) => {
+    console.log('stock', stock)
+    setStock(stock)
+    setShow(true)
+  }
   return (
     <Layout title="Sobre">
       
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+          <TicketForm setShow={setShow} stockID={stock} update={false} show={show}></TicketForm>
           <div className="pb-4 bg-white dark:bg-gray-900">
               {/* <label htmlFor="table-search" className="sr-only">Search</label>
               <div className="relative mt-1">
@@ -46,6 +55,9 @@ const WithStaticProps = ({ items }: Props) => {
                       <th scope="col" className="px-6 py-3">
                           Base Ticket
                       </th>
+                      <th scope="col" className="px-6 py-3">
+                          Tickets
+                      </th>
                   </tr>
               </thead>
               <tbody>
@@ -68,6 +80,15 @@ const WithStaticProps = ({ items }: Props) => {
                           {item.ticket}
                         </td>
                         <td className="px-6 py-4">
+                          {item.tickets}
+                        </td>
+                        <td className="px-6 py-4">
+                            
+                            <button onClick={() => handleOpen(item.id)} id="defaultModalButton" data-modal-toggle="defaultModal" className="block text-black bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" type="button">
+                              Add Ticket
+                            </button>
+                        </td>
+                        <td className="px-6 py-4">
                             <Link href={`/stock/update/${encodeURIComponent(item.id)}`} legacyBehavior>
                               <a className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
                             </Link>
@@ -86,9 +107,7 @@ export const getStaticProps: GetStaticProps = async () => {
   // Don't forget to include the respective types for any props passed into
   // the component.
   const response = await fetch('http://localhost:5000/stock')
-  console.log('response', response)
   const result = await response.json()
-  console.log('result', result.stocks)
   const items: Stock[] = result.stocks
   return { props: { items } }
 }
