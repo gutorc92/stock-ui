@@ -1,11 +1,9 @@
 import { GetStaticProps } from 'next'
 import Link from 'next/link'
 import Layout from '../../components/Layout'
-import List from '../../components/List'
 
 import { Stock } from '../../interfaces'
 import TicketForm from '../../components/TicketForm'
-import { sampleStockData } from '../../utils/sample-data'
 import { useState } from 'react'
 type Props = {
   items: Stock[]
