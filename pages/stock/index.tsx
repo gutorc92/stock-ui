@@ -4,7 +4,9 @@ import Layout from '../../components/Layout'
 
 import { Stock } from '../../interfaces'
 import TicketForm from '../../components/TicketForm'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { Badge } from 'flowbite-react';
+
 type Props = {
   items: Stock[]
 }
@@ -12,6 +14,11 @@ type Props = {
 const WithStaticProps = ({ items }: Props) => {
   const [show, setShow] = useState(false);
   const [stock, setStock] = useState(0)
+  const [domLoaded, setDomLoaded] = useState(false);
+
+  useEffect(() => {
+    setDomLoaded(true);
+  }, []);
   const handleOpen = async (stock: number) => {
     console.log('stock', stock)
     setStock(stock)
@@ -21,7 +28,7 @@ const WithStaticProps = ({ items }: Props) => {
     <Layout title="Sobre">
       
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <TicketForm setShow={setShow} stockID={stock} update={false} show={show}></TicketForm>
+          {domLoaded && (<TicketForm setShow={setShow} stockID={stock} update={false} show={show}></TicketForm>)}
           <div className="pb-4 bg-white dark:bg-gray-900">
               {/* <label htmlFor="table-search" className="sr-only">Search</label>
               <div className="relative mt-1">
@@ -78,7 +85,15 @@ const WithStaticProps = ({ items }: Props) => {
                           {item.ticket}
                         </td>
                         <td className="px-6 py-4">
-                          {item.tickets}
+                          <div className="flex flex-wrap items-center gap-2">
+                            {item.tickets.map(ticket => (
+                              <Badge
+                                size="sm"
+                                >
+                                {ticket}
+                              </Badge>
+                            ))}
+                          </div>
                         </td>
                         <td className="px-6 py-4">
                             

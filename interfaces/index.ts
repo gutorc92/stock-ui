@@ -19,3 +19,9 @@ export type Stock = {
 export type Ticket = {
   ticket: string;
 }
+
+export type TicketComplete = {
+  id: number;
+  ticket: string;
+  name: string;
+}

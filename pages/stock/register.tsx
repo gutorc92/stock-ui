@@ -1,42 +1,52 @@
-import Link from 'next/link'
+import { useState } from 'react'
 import Layout from '../../components/Layout'
 import { FormEvent } from 'react'
-
+import { Modal, Button } from 'flowbite-react'
+import { useRouter } from 'next/navigation';
 const RegisterPage = () => {
-  // Handle the submit event on form submit.
+  const { push } = useRouter();
+  const [show, setShow] = useState<boolean>(false);
+  const onClick = async (event: FormEvent) => {
+    console.log('event', event)
+    push('/stock');
+  }
   const handleSubmit = async (event: FormEvent) => {
-    // Stop the form from submitting and refreshing the page.
     event.preventDefault()
-
-    // Cast the event target to an html form
     const form = event.target as HTMLFormElement
-
-    // Get data from the form.
-    const data = {
-      name: form.name.value as string,
-      base_ticket: form.base_ticket.value as string,
+    try {
+      const response = await fetch('http://localhost:5000/stock', {
+        body: JSON.stringify({
+          name: form.name.value as string,
+          base_ticket: form.base_ticket.value as string,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+      })
+      const result = await response.json()
+      console.log('result from create stock', result)
+      setShow(true)
+    } catch (error) {
+      console.error('error on create stock', error)
     }
-
-    // Send the form data to our API and get a response.
-    const response = await fetch('http://localhost:5000/stock', {
-      // Body of the request is the JSON data we created above.
-      body: JSON.stringify(data),
-      // Tell the server we're sending JSON.
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      // The method is POST because we are sending data.
-      method: 'POST',
-    })
-
-    // Get the response data from server as JSON.
-    // If server returns the name submitted, that means the form works.
-    const result = await response.json()
-    alert(`Is this your full name: ${result.data}`)
   }
   return (
     <Layout title="Stock Register">
       <section className="bg-white dark:bg-gray-900">
+      <Modal
+        show={show}
+        onClose={() => setShow(false)}
+      >
+        <Modal.Body>
+          Stock created.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={onClick}>
+            ok
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
       <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">Adicionar Empresa</h2>
       <form onSubmit={handleSubmit}>

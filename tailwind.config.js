@@ -2,7 +2,11 @@ const colors = require('tailwindcss/colors')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
+  content: [
+    './node_modules/flowbite-react/**/*.js',
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}'
+  ],
   darkMode: 'class',
   theme: {
     extend: {
@@ -48,5 +52,8 @@ module.exports = {
     }
   },
   variants: {},
-  plugins: [require('tailwindcss-filters')],
+  plugins: [
+    require('tailwindcss-filters'),
+    require("flowbite/plugin")
+  ],
 }
