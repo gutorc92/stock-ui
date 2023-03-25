@@ -71,7 +71,7 @@ export const getStaticProps: GetStaticProps = async () => {
   // Example for including static props in a Next.js function component page.
   // Don't forget to include the respective types for any props passed into
   // the component.
-  const response = await fetch('http://localhost:5000/tickets')
+  const response = await fetch(`${process.env.BASE_URL}/ticket`)
   const result = await response.json()
   const items: TicketComplete[] = result.items
   return { props: { items } }

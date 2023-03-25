@@ -17,15 +17,23 @@ const TicketForm = ({ setShow, stockID, update, show }: Props) => {
       ticket: form.ticket.value as string,
       stock_id: stockID
     }
-    const url = update ? `http://localhost:5000/stock/${stockID}/ticket` : `http://localhost:5000/stock/${stockID}/ticket`
-    const response = await fetch(url, {
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: update ? 'PATCH' : 'POST',
-    })
-    const result = await response.json()
+    const url = update ? `${process.env.BASE_URL}/ticket/` : `${process.env.BASE_URL}/ticket/`
+    console.log('url ticket', url)
+    try {
+      const response = await fetch(url, {
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: update ? 'PATCH' : 'POST',
+      })
+      const result = await response.json()
+      console.log('result', result);
+      form.reset()
+      setShow(false)
+    } catch (err) {
+      console.error('error on post ticket', err)
+    }
   }
   return (
     <React.Fragment>
