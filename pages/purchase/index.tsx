@@ -49,7 +49,7 @@ const PurchasePage = ({ items }: Props) => {
         </Table.Head>
         <Table.Body className="divide-y">
           {items.map((item) => (
-          <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
+          <Table.Row key={item.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
             <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
               {item.ticket}
             </Table.Cell>
